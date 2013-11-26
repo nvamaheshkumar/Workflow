@@ -1,0 +1,94 @@
+<html>
+<head>
+    <title>
+        Task
+    </title>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <style>
+        .Droppable-area {
+            width: 400px;
+            height: 400px;
+            float: left;
+        }
+       
+         .Dragable-area {
+            width: 400px;
+            height: 400px;
+            float:right;
+        }
+    </style>
+</head>
+<body>
+    <div class="Droppable-area" style="border:1px solid #000000"></div>
+    <div class="Dragable-area" style="border:1px solid #000000">
+    <img src="~/Content/mail.png" class="img" width="100" height="100" />
+    <img src="~/Content/person.png" class="img1" width="100" height="100" />
+    </div>
+    <script>
+        
+            //},
+
+            //over: function (event, ui) {
+                jsPlumb.bind("ready", function () {
+                  
+                    var targetOption = {
+                        anchor: "TopCenter",
+                        maxConnections: -1,
+                        isSource: false,
+                        isTarget: true,
+                        connectorStyle: { strokeStyle: "#66FF00", lineWidth: 8 },
+                        connector: ["Bezier", { curviness: 100 }],
+                        detachable: false,
+                        endpoint: ["Dot", { radius: 5 }],
+                        paintStyle: { fillStyle: "#66FF00" },
+                        setDragAllowedWhenFull: true,
+                    }
+
+                    var sourceOption = {
+                        anchor: "BottomCenter",
+                        maxConnections: -1,
+                        isSource: true,
+                        isTarget: false,
+                        connectorStyle: { strokeStyle: "#FFEF00", lineWidth: 8 },
+                        connector: ["Bezier", { curviness: 100 }],
+                        detachable: false,
+                        endpoint: ["Dot", { radius: 5 }],
+                        paintStyle: { fillStyle: "#FFEF00" },
+                        setDragAllowedWhenFull: true
+                    }
+
+                    jsPlumb.addEndpoint($('.img'), targetOption);
+                    //jsPlumb.addEndpoint($('.img'), sourceOption);
+
+                    //jsPlumb.addEndpoint($('.img1'), targetOption);
+                    jsPlumb.addEndpoint($('.img1'), sourceOption);
+
+                    jsPlumb.draggable($('.img'));
+                    jsPlumb.draggable($('.img1'));
+                
+                });
+                $(document).ready(function () {
+                    $(".img,.img1").draggable(
+                    {
+                        revert: 'invalid',
+                        helper: 'clone',
+                    });
+
+                    $(".Droppable-area").droppable({
+                        drop: function (event, ui) {
+                            $.ui.ddmanager.current.cancelHelperRemoval = true;
+                            $(ui.helper).draggable({  containment: '.Droppable-area' });
+                        },
+
+        });
+      });
+    </script>
+</body>
+</html>
+
+
